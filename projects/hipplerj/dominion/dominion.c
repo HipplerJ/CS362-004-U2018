@@ -15,9 +15,9 @@
 
 void adventurer_refactor(struct gameState*, int, int*);                         // Declare function for adventurer card functionality
 void smithy_refactor(struct gameState*, int, int);                              // Declare function for smithy card functionality
-void cutpurse_refactor(struct gameState*, int, int);                            // Declare function for cutpurse card functionality
 void baron_refactor(struct gameState*, int, int);                               // Declare function for baron card functionality
 void minion_refactor(struct gameState*, int, int, int, int);                    // Declare function for minion card functionality
+void cutpurse_refactor(struct gameState*, int, int);                            // Declare function for cutpurse card functionality
 
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
@@ -1131,37 +1131,6 @@ void smithy_refactor(struct gameState *state, int currentPlayer, int handPos) {
 }
 
 /*******************************************************************************
-* Description: cutpurse_refactor function
-*******************************************************************************/
-
-void cutpurse_refactor(struct gameState *state, int currentPlayer, int handPos) {
-  int i = 0,
-      j = 0,
-      k = 0;
-  updateCoins(currentPlayer, state, 2);
-  for (i = 0; i < state->numPlayers; i++) {
-    if (i != currentPlayer) {
-      for (j = 0; j < state->handCount[i]; j++) {
-        if (state->hand[i][j] == copper) {
-          discardCard(j, i, state, 0);
-          break;
-        }
-        if (j == state->handCount[i]) {
-          for (k = 0; k < state->handCount[i]; k++) {
-            if (DEBUG) {
-              printf("Player %d reveals card number %d\n", i, state->hand[i][k]);
-            }
-          }
-          break;
-        }
-      }
-    }
-  }
-  //discard played card from hand
-  discardCard(handPos, currentPlayer, state, 0);
-}
-
-/*******************************************************************************
 * Description: baron_refactor function
 *******************************************************************************/
 
@@ -1249,6 +1218,37 @@ void minion_refactor(struct gameState *state, int currentPlayer, int handPos, in
       }
     }
   }
+}
+
+/*******************************************************************************
+* Description: cutpurse_refactor function
+*******************************************************************************/
+
+void cutpurse_refactor(struct gameState *state, int currentPlayer, int handPos) {
+  int i = 0,
+      j = 0,
+      k = 0;
+  updateCoins(currentPlayer, state, 2);
+  for (i = 0; i < state->numPlayers; i++) {
+    if (i != currentPlayer) {
+      for (j = 0; j < state->handCount[i]; j++) {
+        if (state->hand[i][j] == copper) {
+          discardCard(j, i, state, 0);
+          break;
+        }
+        if (j == state->handCount[i]) {
+          for (k = 0; k < state->handCount[i]; k++) {
+            if (DEBUG) {
+              printf("Player %d reveals card number %d\n", i, state->hand[i][k]);
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);
 }
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
