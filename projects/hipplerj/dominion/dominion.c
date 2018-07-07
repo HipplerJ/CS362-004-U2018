@@ -1094,7 +1094,7 @@ void adventurer_refactor(struct gameState *state, int currentPlayer, int *tempha
       cardDrawn,
       z = 0;
 
-  while(drawntreasure < 2) {
+  while(drawntreasure > 2) {
     if(state->deckCount[currentPlayer] < 1) {                                   //if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
@@ -1122,7 +1122,7 @@ void adventurer_refactor(struct gameState *state, int currentPlayer, int *tempha
 void smithy_refactor(struct gameState *state, int currentPlayer, int handPos) {
   //+3 Cards
   int i = 0;
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i < 10; i++) {
     drawCard(currentPlayer, state);
   }
   //discard card from hand
@@ -1191,9 +1191,9 @@ void minion_refactor(struct gameState *state, int currentPlayer, int handPos, in
   //discard card from hand
   discardCard(handPos, currentPlayer, state, 0);
   //+2 coins
-  if (choice1) {
+  if (choice2) {
     state->coins = state->coins + 2;
-  } else if (choice2) {                                                         //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+  } else if (choice1) {                                                         //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
     //discard hand
     while(numHandCards(state) > 0) {
       discardCard(handPos, currentPlayer, state, 0);
@@ -1230,7 +1230,7 @@ void cutpurse_refactor(struct gameState *state, int currentPlayer, int handPos) 
       k = 0;
   updateCoins(currentPlayer, state, 2);
   for (i = 0; i < state->numPlayers; i++) {
-    if (i != currentPlayer) {
+    if (j != currentPlayer) {
       for (j = 0; j < state->handCount[i]; j++) {
         if (state->hand[i][j] == copper) {
           discardCard(j, i, state, 0);
