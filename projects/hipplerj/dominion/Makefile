@@ -46,9 +46,6 @@ unittest3: unittest3.c dominion.o rngs.o
 unittest4: unittest4.c dominion.o rngs.o
 	gcc -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
 
-unittest5: unittest5.c dominion.o rngs.o
-	gcc -o unittest5 -g unittest5.c dominion.o rngs.o $(CFLAGS)
-
 cardtest1: cardtest1.c dominion.o rngs.o
 	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
 
@@ -60,9 +57,6 @@ cardtest3: cardtest3.c dominion.o rngs.o
 
 cardtest4: cardtest4.c dominion.o rngs.o
 	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o $(CFLAGS)
-
-cardtest1: cardtest5.c dominion.o rngs.o
-	gcc -o cardtest5 -g cardtest5.c dominion.o rngs.o $(CFLAGS)
 
 unittestresults.out: unittest1 unittest2 unittest3 unittest4 unittest5 cardtest1 cardtest2 cardtest3 cardtest4 cardtest5 dominion.o rngs.o
 	echo "Results from Running Assignment 3 Tests:" > unittestresults.out
@@ -77,9 +71,6 @@ unittestresults.out: unittest1 unittest2 unittest3 unittest4 unittest5 cardtest1
 	gcov dominion.c >> unittestresults.out
 	echo "unittest4.c:" >> unittestresults.out
 	./unittest4 >> unittestresults.out
-	gcov dominion.c >> unittestresults.out
-	echo "unittest5.c:" >> unittestresults.out
-	./unittest5 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
 
 clean:
