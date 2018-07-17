@@ -65,24 +65,19 @@ cardtest1: cardtest5.c dominion.o rngs.o
 	gcc -o cardtest5 -g cardtest5.c dominion.o rngs.o $(CFLAGS)
 
 unittestresults.out: unittest1 unittest2 unittest3 unittest4 unittest5 cardtest1 cardtest2 cardtest3 cardtest4 cardtest5 dominion.o rngs.o
-	echo "Results from Running Assignment 3 Tests:" > unittestresults.outpost
-
+	echo "Results from Running Assignment 3 Tests:" > unittestresults.out
 	echo "unittest1.c:" >> unittestresults.out
 	./unittest1 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
-
 	echo "unittest2.c:" >> unittestresults.out
 	./unittest2 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
-
 	echo "unittest3.c:" >> unittestresults.out
 	./unittest3 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
-
 	echo "unittest4.c:" >> unittestresults.out
 	./unittest4 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
-
 	echo "unittest5.c:" >> unittestresults.out
 	./unittest5 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
