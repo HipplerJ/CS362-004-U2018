@@ -53,7 +53,7 @@ void print_test_results();
 *******************************************************************************/
 
 int main(int argc, char const *argv[]) {
-  struct gameState start_state,
+  struct gameState default_state,
                    test_state;
   int numPlayers = 2,                                                           // Set the number of players to 2 for game state
       randomSeed = 30;                                                          // Set the random seed number to 30
@@ -70,8 +70,8 @@ int main(int argc, char const *argv[]) {
                           };
 
   printf("Beginning %s Card Testing\n", TEST_CARD_NAME);
-  initializeGame(numPlayers, kingdomCards, randomSeed, &start_state);
-  test_state = start_state;
+  initializeGame(numPlayers, kingdomCards, randomSeed, &default_state);
+  test_state = default_state;
   print_test_results();
   printf(">>>>>> SUCCESS: Testing Complete for %s Card <<<<<<<\n", TEST_CARD_NAME);
   return 0;
