@@ -88,7 +88,7 @@ int main(int argc, char const *argv[]) {
 *******************************************************************************/
 
 void print_test_details() {
-  printf("---------- FUNTION TEST: %s ----------\n", TEST_FUNC_NAME);              // Output the name of the card being tested (smithy)
+  printf("---------- FUNTION TEST: %s ----------\n", TEST_FUNC_NAME);           // Output the name of the card being tested (smithy)
   printf("==> TEST FILE: %s\n", TEST_FILE_NAME);                                // Output the name of the file used for testing
 }
 
