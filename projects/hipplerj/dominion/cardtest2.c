@@ -10,11 +10,10 @@
 ** Filename: cardtest2.c
 **
 ** OBJECTIVES:
-** Write unit tests for four Dominion cards implemented in dominion.c. Write
-** these tests so that they work whether a card is implemented inside cardEffect
-** or in its own function. These tests should be checked in as cardtest1.c,
-** cardtest2.c, cardtest3.c, and cardtest4.c. It is mandatory to test smithy
-** and adventurer card. (20 points)
+** Write unit tests for four Dominion cards implemented in dominion.c. Write these tests so that they
+** work whether a card is implemented inside cardEffect or in its own function. These tests should be
+** checked in as cardtest1.c, cardtest2.c, cardtest3.c, and cardtest4.c. It is mandatory to test smithy and
+** adventurer card. (20 points)
 **
 ** TEST CARD: adventurer
 ** Reveal cards from your deck until you reveal 2 Treasure cards.  Put those
@@ -90,7 +89,6 @@ void played_card_test(struct gameState, struct gameState);
 void discard_test(struct gameState, struct gameState);
 void kingdom_card_test(struct gameState, struct gameState, int*);
 void victory_card_test(struct gameState, struct gameState, int*);
-void teasure_card_test(struct gameState, struct gameState);
 
 /*******************************************************************************
 * Description: main function
@@ -125,7 +123,6 @@ int main(int argc, char const *argv[]) {
   discard_test(test_state, def_state);
   kingdom_card_test(test_state, def_state, kingdomCards);
   victory_card_test(test_state, def_state, victoryCards);
-  teasure_card_test(test_state, def_state);
   printf("\n\n");
   return 0;
 }
@@ -177,7 +174,7 @@ void player_deck_size_test(struct gameState test, struct gameState def) {
   if((def.deckCount[0] - 2) < test.deckCount[0]){
     printf("[%sFAILED%s] Received Deck Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[0]);
   } else {
-    printf("[%sPASSED%s] Received is Equal to Expected of Less\n", KGREEN, KNRM);
+    printf("[%sPASSED%s] Received is Equal to Expected or Less\n", KGREEN, KNRM);
   }
 }
 
@@ -269,7 +266,7 @@ void kingdom_card_test(struct gameState test, struct gameState def, int* kingdom
                           };
   int i = 0;
   printf("==> TEST 7: Testing Supply Card Piles (Kingdom Cards)\n");
-  printf("==> Kingdom Supply Card Pile should remaing unchanged\n");
+  printf("==> Kingdom Supply Card Pile should remain unchanged\n");
   for(i = 0; i < 10; i ++) {
     printf("Received %s Cards: %d\n", king_names[i], test.supplyCount[kingdomCards[i]]);
     printf("Expected %s Cards: %d\n", king_names[i], def.supplyCount[kingdomCards[i]]);
@@ -293,7 +290,7 @@ void victory_card_test(struct gameState test, struct gameState def, int* victory
                           };
   int i = 0;
   printf("==> TEST 8: Testing Supply Card Piles (Victory Cards)\n");
-  printf("==> Victory Supply Card Pile should remaing unchanged\n");
+  printf("==> Victory Supply Card Pile should remain unchanged\n");
   for(i = 0; i < 3; i ++) {
     printf("Received %s Cards: %d\n", vict_names[i], test.supplyCount[victoryCards[i]]);
     printf("Expected %s Cards: %d\n", vict_names[i], def.supplyCount[victoryCards[i]]);
@@ -302,25 +299,5 @@ void victory_card_test(struct gameState test, struct gameState def, int* victory
     } else {
       printf("[%sPASSED%s] Received and Expected Number of %s Cards Match\n", KGREEN, KNRM, vict_names[i]);
     }
-  }
-}
-
-/*******************************************************************************
-* Description: teasure_card_test function
-* Confirm that the player's number of treasure cards are increased by two of
-* either gold, silver or copper
-*******************************************************************************/
-
-void teasure_card_test(struct gameState test, struct gameState def) {
-  int coins = 2,
-      def_value = def.coins + coins;
-  printf("==> TEST 9: Testing Number of Coins\n");
-  printf("==> Number of coins should increase to 6 (4 + 2 = 6)\n");
-  printf("Received Coin Count Value: %d\n", test.coins);
-  printf("Starting Coin Count Value: %d\n", def_value);
-  if(def_value != test.coins){
-    printf("[%sFAILED%s] Received Coin Count Value (%d Cards) Incorrect\n", KRED, KNRM, test.coins);
-  } else {
-    printf("[%sPASSED%s] Received and Expected Coin Count Values Match\n", KGREEN, KNRM);
   }
 }

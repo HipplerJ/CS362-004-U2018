@@ -10,11 +10,10 @@
 ** Filename: cardtest4.c
 **
 ** OBJECTIVES:
-** Write unit tests for four Dominion cards implemented in dominion.c. Write
-** these tests so that they work whether a card is implemented inside cardEffect
-** or in its own function. These tests should be checked in as cardtest1.c,
-** cardtest2.c, cardtest3.c, and cardtest4.c. It is mandatory to test smithy
-** and adventurer card. (20 points)
+** Write unit tests for four Dominion cards implemented in dominion.c. Write these tests so that they
+** work whether a card is implemented inside cardEffect or in its own function. These tests should be
+** checked in as cardtest1.c, cardtest2.c, cardtest3.c, and cardtest4.c. It is mandatory to test smithy and
+** adventurer card. (20 points)
 **
 ** TEST CARD: Village
 ** +1 Cards
@@ -275,7 +274,7 @@ void kingdom_card_test(struct gameState test, struct gameState def, int* kingdom
                           };
   int i = 0;
   printf("==> TEST 8: Testing Supply Card Piles (Kingdom Cards)\n");
-  printf("==> Kingdom Supply Card Pile should remaing unchanged\n");
+  printf("==> Kingdom Supply Card Pile should remain unchanged\n");
   for(i = 0; i < 10; i ++) {
     printf("Received %s Cards: %d\n", king_names[i], test.supplyCount[kingdomCards[i]]);
     printf("Expected %s Cards: %d\n", king_names[i], def.supplyCount[kingdomCards[i]]);
@@ -297,7 +296,7 @@ void victory_card_test(struct gameState test, struct gameState def, int* victory
                           };
   int i = 0;
   printf("==> TEST 9: Testing Supply Card Piles (Victory Cards)\n");
-  printf("==> Victory Supply Card Pile should remaing unchanged\n");
+  printf("==> Victory Supply Card Pile should remain unchanged\n");
   for(i = 0; i < 3; i ++) {
     printf("Received %s Cards: %d\n", vict_names[i], test.supplyCount[victoryCards[i]]);
     printf("Expected %s Cards: %d\n", vict_names[i], def.supplyCount[victoryCards[i]]);
