@@ -11,7 +11,6 @@
 **
 ** Function Test: discardCard
 ** int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
-
 **
 ** OBJECTIVES:
 ** The primary goal of this assignment is to learn how to create unit tests.
@@ -74,7 +73,6 @@ int main(int argc, char const *argv[]) {
                          };
   print_test_details();
   initializeGame(numPlayers, kingdomCards, randomSeed, &game);
-    printf("%d\n", game.playedCards[0]);
   check_trash(game);
   check_player_hand_count(game);
   check_played_hand_slot(game);
