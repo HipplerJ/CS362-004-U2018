@@ -54,6 +54,11 @@
 *******************************************************************************/
 
 void print_test_details();
+void check_trash(struct gameState);
+void check_played_card_count(struct gameState);
+void check_played_card_array(struct gameState);
+void check_player_hand_count(struct gameState);
+void check_played_hand_slot(struct gameState);
 
 /*******************************************************************************
 * Description: main function
@@ -69,6 +74,10 @@ int main(int argc, char const *argv[]) {
                          };
   print_test_details();
   initializeGame(numPlayers, kingdomCards, randomSeed, &game);
+    printf("%d\n", game.playedCards[0]);
+  check_trash(game);
+  check_player_hand_count(game);
+  check_played_hand_slot(game);
   printf("\n\n");
   return 0;
 }
@@ -82,7 +91,71 @@ void print_test_details() {
   printf("==> TEST FILE: %s\n", TEST_FILE_NAME);                                // Output the name of the file used for testing
 }
 
+/*******************************************************************************
+* Description: check_trash function
+*******************************************************************************/
+
 void check_trash(struct gameState game) {
   int trashFlag = 0;
+  printf("==> TEST 1: Testing Trash Flag Functionality\n");
+  printf("==> Played Card Count Should Increase\n");
+  printf("==> Played Cards Array should have value in first element\n");
+  discardCard(0, 0, &game, trashFlag);
+  check_played_card_count(game);
+  check_played_card_array(game);
+}
 
+/*******************************************************************************
+* Description: check_played_card_count function
+*******************************************************************************/
+
+void check_played_card_count(struct gameState game){
+  if(game.playedCardCount == 1) {
+    printf("[%sPASSED%s] Played Card Count was Increased\n", KGREEN, KNRM);
+  } else {
+    printf("[%sFAILED%s] Played Card Count was NOT Increased\n", KRED, KNRM);
+  }
+}
+
+/*******************************************************************************
+* Description: check_played_card_array function
+*******************************************************************************/
+
+void check_played_card_array(struct gameState game) {
+  if(game.playedCards[0] == game.hand[0][0]){
+    printf("[%sPASSED%s] Played Card and Card in Player Hand Match\n", KGREEN, KNRM);
+  } else {
+    printf("[%sFAILED%s] Played Card and Card in Player Hand DO NOT Match\n", KRED, KNRM);
+  }
+}
+
+/*******************************************************************************
+* Description: check_player_hand_count function
+*******************************************************************************/
+
+void check_player_hand_count(struct gameState game) {
+  int pre_discard = game.handCount[0];
+  printf("==> TEST 2: Testing Player Hand Size\n");
+  printf("==> Player Hand should decrease by one\n");
+  discardCard(0, 0, &game, 1);
+  if((pre_discard - 1) == game.handCount[0]){
+    printf("[%sPASSED%s] Player Hand was reduced\n", KGREEN, KNRM);
+  } else {
+    printf("[%sFAILED%s] Player Hand was NOT reduced\n", KRED, KNRM);
+  }
+}
+
+/*******************************************************************************
+* Description: check_played_hand_slot function
+*******************************************************************************/
+
+void check_played_hand_slot(struct gameState game) {
+  printf("==> TEST 3: Testing Card is removed from Hand\n");
+  printf("==> Discard Slot in Hand should be -1\n");
+  discardCard(0, 0, &game, 1);
+  if(game.hand[0][0] != -1) {
+    printf("[%sPASSED%s] Card Successfully Discarded\n", KGREEN, KNRM);
+  } else {
+    printf("[%sFAILED%s] Card NOT Discarded Correctly\n", KRED, KNRM);
+  }
 }
