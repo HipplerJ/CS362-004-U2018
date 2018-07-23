@@ -5,4 +5,4 @@ testme: testme.c
 	./testme_hipplerj
 
 clean:
-	rm -f *.o testme_hipplerj
+	rm -f testme_hipplerj
