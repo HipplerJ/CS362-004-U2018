@@ -1,4 +1,4 @@
-# Assignment 3  
+# Random Testing Quiz (RTQ) 
 James Hippler (hipplerj)  
 CS 362-400 (Summer 2018)  
 Software Engineering II  
