@@ -45,8 +45,9 @@ protected void setUp() {
 //            UrlValidator.ALLOW_2_SLASHES
 //                + UrlValidator.ALLOW_ALL_SCHEMES
 //                + UrlValidator.NO_FRAGMENTS;
-//    
+//
 //        testIsValid(testUrlPartsOptions, options);
+
    }
 
    public void testIsValidScheme() {
