@@ -7,6 +7,11 @@
 *.obj
 *.elf
 
+# GCOV Files
+*.gcov
+*.gcda
+*.gcno
+
 # Linker output
 *.ilk
 *.map
