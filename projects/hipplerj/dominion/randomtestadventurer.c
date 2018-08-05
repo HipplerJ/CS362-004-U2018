@@ -72,7 +72,7 @@
 ** DEFINE GLOBAL VARIABLES
 *******************************************************************************/
 
-#define TEST_CARD_NAME "Adventurer"                                             // Define global variable for card name "adventurer"
+#define TEST_CARD_NAME "Adventurer"                                             // Define global variable for card name "Adventurer"
 #define TEST_FILE_NAME "randomtestadventurer.c"                                 // Define global variable for the file name used for testing
 #define MIN_PLAYERS 2
 #define KNRM "\x1B[0m"                                                          // Define global variable to change console color to Normal
