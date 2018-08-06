@@ -16,9 +16,11 @@
 ** assignment-3. Check these testers in as randomtestcard1.c, randomtestcard2.c,
 ** and randomtestadventurer.c (45 Points)
 **
-** TEST CARD: Village
-** +1 Cards
-** +2 Actions
+** TEST CARD: baron
+** +1 Buy
+** You may discard an Estate for +4 Gold. If you don't, gain an estate
+** Choice 0: Gain Estate
+** Choice 1: Discard Estate for +4 Gold
 **
 ** GAME STATE STRUCTURE
 ** struct gameState {
@@ -66,13 +68,13 @@
 #include <stdio.h>                                                              // Include the stdio.h C Library (necessary for I/O)
 #include <stdlib.h>                                                             // Include the stdlib.h C Library (necessary for standard C functions)
 #include <string.h>                                                             // Include the string.h C Library (necessary for memcpy)
-#include <time.h>                                                               // Include the string.h C Library (necessary for memcpy)
+#include <time.h>                                                               // Include the time.h C Library (necessary for seeding random time)
 
 /*******************************************************************************
 ** DEFINE GLOBAL VARIABLES
 *******************************************************************************/
 
-#define TEST_CARD_NAME "Village"                                                // Define global variable for card name "Village"
+#define TEST_CARD_NAME "Baron"                                                  // Define global variable for card name "baron"
 #define TEST_FILE_NAME "randomtestcard2.c"                                      // Define global variable for the file name used for testing
 #define MIN_PLAYERS 2
 #define KNRM "\x1B[0m"                                                          // Define global variable to change console color to Normal
@@ -85,15 +87,16 @@
 
 void print_test_details();
 int test_initialize_game(int, int*, int, struct gameState*);
-void player_hand_size_test(struct gameState, struct gameState);
-void player_deck_size_test(struct gameState, struct gameState);
-void opponent_hand_size_test(struct gameState, struct gameState);
-void opponent_deck_size_test(struct gameState, struct gameState);
-void num_actions_test(struct gameState, struct gameState);
-void played_card_test(struct gameState, struct gameState);
-void discard_test(struct gameState, struct gameState);
-void kingdom_card_test(struct gameState, struct gameState, int*);
-void victory_card_test(struct gameState, struct gameState, int*);
+void player_hand_size_test(struct gameState, struct gameState, int);
+void player_deck_size_test(struct gameState, struct gameState, int);
+void opponent_hand_size_test(struct gameState, struct gameState, int);
+void opponent_deck_size_test(struct gameState, struct gameState, int);
+void played_card_test(struct gameState, struct gameState, int);
+void discard_test(struct gameState, struct gameState, int);
+void kingdom_card_test(struct gameState, struct gameState, int*, int);
+void victory_card_test(struct gameState, struct gameState, int*, int);
+void teasure_card_test(struct gameState, struct gameState, int);
+void num_buy_test(struct gameState, struct gameState, int);
 
 /*******************************************************************************
 * Description: main function
@@ -102,11 +105,13 @@ void victory_card_test(struct gameState, struct gameState, int*);
 int main(int argc, char const *argv[]) {
   int num_tests = 5000;
   int status = -5;
+  srand(time(NULL));
   struct gameState def_state,                                                   // Initialize a game state structure for default game values
-                   test_state;                                                  // Initialize a game state structure for testing values
-  int numPlayers = 0,                                                           // Initialize an integer variable for the number of players as 2
-      randomSeed = (rand() % 100),                                              // Initialize an integer variable for random seed numbers
-      choice1 = 0,
+                   test_state_c0,                                               // Initialize a game state structure for testing values
+                   test_state_c1;                                               // Initialize a game state structure for testing values
+  int numPlayers = 2,                                                           // Initialize an integer variable for the number of players as 2
+      randomSeed = (rand() % 1000),                                                        // Initialize an integer variable for random seed numbers
+      // choice1 = 0,
       choice2 = 0,
       choice3 = 0,
       bonus = 0,
@@ -119,28 +124,42 @@ int main(int argc, char const *argv[]) {
   int victoryCards[3] = {
                           estate, duchy, province
                         };
-
   while(i < num_tests) {
-    numPlayers = (rand() % 6);
     print_test_details(i, num_tests);
     status = test_initialize_game(numPlayers, kingdomCards, randomSeed, &def_state);
-    if(status == -1) {
+    if (status == -1) {
       printf("Could not initialize Game.\n");
       printf("Random Value %d for Players is Invalid\n", numPlayers);
       printf("\n\n");
       continue;
     }
-    memcpy(&test_state, &def_state, sizeof(struct gameState));
-    cardEffect(village, choice1, choice2, choice3, &test_state, handPos, &bonus);
-    player_hand_size_test(test_state, def_state);
-    player_deck_size_test(test_state, def_state);
-    opponent_hand_size_test(test_state, def_state);
-    opponent_deck_size_test(test_state, def_state);
-    num_actions_test(test_state, def_state);
-    played_card_test(test_state, def_state);
-    discard_test(test_state, def_state);
-    kingdom_card_test(test_state, def_state, kingdomCards);
-    victory_card_test(test_state, def_state, victoryCards);
+    // Setup Test suite for Baron with Choice 0 option
+    printf("==> Baron - Choice 0\n");
+    memcpy(&test_state_c0, &def_state, sizeof(struct gameState));
+    cardEffect(baron, 0, choice2, choice3, &test_state_c0, handPos, &bonus);      // Setup test instance for choice 0 on baron
+    player_hand_size_test(test_state_c0, def_state, 0);
+    player_deck_size_test(test_state_c0, def_state, 0);
+    opponent_hand_size_test(test_state_c0, def_state, 0);
+    played_card_test(test_state_c0, def_state, 0);
+    discard_test(test_state_c0, def_state, 0);
+    kingdom_card_test(test_state_c0, def_state, kingdomCards, 0);
+    victory_card_test(test_state_c0, def_state, victoryCards, 0);
+    teasure_card_test(test_state_c0, def_state, 0);
+    num_buy_test(test_state_c0, def_state, 0);
+    printf("******************************\n");
+    // Setup Test suite for Baron with Choice 1 option
+    printf("==> Baron - Choice 1\n");
+    memcpy(&test_state_c1, &def_state, sizeof(struct gameState));
+    cardEffect(baron, 1, choice2, choice3, &test_state_c1, handPos, &bonus);      // Setup test instance for choice 1 on baron
+    player_hand_size_test(test_state_c1, def_state, 1);
+    player_deck_size_test(test_state_c1, def_state, 1);
+    opponent_deck_size_test(test_state_c1, def_state, 1);
+    played_card_test(test_state_c1, def_state, 1);
+    discard_test(test_state_c1, def_state, 1);
+    kingdom_card_test(test_state_c1, def_state, kingdomCards, 1);
+    victory_card_test(test_state_c1, def_state, victoryCards, 1);
+    teasure_card_test(test_state_c1, def_state, 1);
+    num_buy_test(test_state_c1, def_state, 1);
     i ++;
     printf("\n\n");
   }
@@ -152,9 +171,10 @@ int main(int argc, char const *argv[]) {
 *******************************************************************************/
 
 void print_test_details(int test_number, int num_tests) {
-  printf("---------- RANDOM CARD TEST: %s ----------\n", TEST_CARD_NAME);       // Output the name of the card being tested (smithy)
+  printf("---------- RANDOM CARD TEST: %s ----------\n", TEST_CARD_NAME);       // Output the name of the card being tested (baron)
   printf("TEST FILE: %s\n", TEST_FILE_NAME);                                    // Output the name of the file used for testing
   printf("TEST NUMBER: %d of %d\n", test_number + 1, num_tests);
+  printf("==> This Test Suite Involves Two Test for Both Available Choices\n");
 }
 
 /*******************************************************************************
@@ -188,13 +208,25 @@ int test_initialize_game(int numPlayers, int* kingdomCards, int randomSeed, stru
 * Description: player_hand_size_test function
 *******************************************************************************/
 
-void player_hand_size_test(struct gameState test, struct gameState def) {
-  int draw_cards = 1,
-      discard = 1,
-      def_value = (def.handCount[0] + draw_cards - discard);
+void player_hand_size_test(struct gameState test, struct gameState def, int choice) {
+  int draw_cards = 0,
+      discard = 0,
+      def_value = 0;
+  if (choice == 0){
+    draw_cards = 1;
+    discard = 1;
+  } else {
+    draw_cards = 0;
+    discard = 1;
+  }
+  def_value = (def.handCount[0] + draw_cards - discard);
   printf("TEST #2\n");
-  printf("Testing Player Hand Size with %d Players\n", test.numPlayers);
-  printf("==> Draw One Card.  Hand Size should be 5 (5 + 1 - 1 = 6 Cards)\n");
+  printf("Testing Player Hand Size (Choice %d) with %d Players\n", choice, test.numPlayers);
+  if (choice == 0) {
+    printf("==> Estate Card Gained.  Discard Baron Card\n");
+  } else {
+    printf("==> Estate discarded for Gold.  Dicard %d Estate Card and Baron.\n", discard);
+  }
   printf("Received Hand Size: %d\n", test.handCount[0]);
   printf("Expected Hand Size: %d\n", def_value);
   if(def_value != test.handCount[0]){
@@ -208,18 +240,16 @@ void player_hand_size_test(struct gameState test, struct gameState def) {
 * Description: player_deck_size_test function
 *******************************************************************************/
 
-void player_deck_size_test(struct gameState test, struct gameState def) {
-  int drawn_cards = 1,
-      def_value = (def.deckCount[0] - drawn_cards);
+void player_deck_size_test(struct gameState test, struct gameState def, int choice) {
   printf("TEST #3\n");
   printf("Testing Player Deck Size with %d Players\n", test.numPlayers);
-  printf("==> Draw One Card.  Deck Size should be 4 (5 - 1 = 4 Cards)\n");
+  printf("==> Deck Size should be remain unchanged\n");
   printf("Received Deck Size: %d\n", test.deckCount[0]);
-  printf("Expected Deck Size: %d\n", def_value);
-  if(def_value != test.deckCount[0]){
+  printf("Expected Deck Size: %d\n", def.deckCount[0]);
+  if(def.deckCount[0] != test.deckCount[0]){
     printf("[%sFAILED%s] Received Deck Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[0]);
   } else {
-    printf("[%sPASSED%s] Received and Expected Deck Values Match\n", KGREEN, KNRM);
+    printf("[%sPASSED%s] Received and Expected Deck Size Values Match\n", KGREEN, KNRM);
   }
 }
 
@@ -227,16 +257,16 @@ void player_deck_size_test(struct gameState test, struct gameState def) {
 * Description: opponent_hand_size_test function
 *******************************************************************************/
 
-void opponent_hand_size_test(struct gameState test, struct gameState def) {
+void opponent_hand_size_test(struct gameState test, struct gameState def, int choice) {
   int i = 0;
   printf("TEST #4\n");
   printf("Testing Opponent Hand Size with %d Players\n", test.numPlayers);
-  printf("==> Opponent Hand Size should remain unchanged (0 Cards)\n");
-  for (i = 1; i < test.numPlayers; i ++) {
+  printf("==> Opponent Hand Size should remain unchanged (5 Cards)\n");
+  for (i = 1; i < test.numPlayers; i ++){
     printf("Received Hand Size for Opponent %d: %d\n", i + 1, test.handCount[i]);
     printf("Expected Hand Size for Opponent %d: %d\n", i + 1, def.handCount[i]);
     if(def.handCount[i] != test.handCount[i]){
-      printf("[%sFAILED%s] Received Opponent Hand Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.handCount[i]);
+      printf("[%sFAILED%s] Received Opponent Hand Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.handCount[1]);
     } else {
       printf("[%sPASSED%s] Received and Expected Opponent Hand Size Values Match\n", KGREEN, KNRM);
     }
@@ -247,16 +277,16 @@ void opponent_hand_size_test(struct gameState test, struct gameState def) {
 * Description: opponent_deck_size_test function
 *******************************************************************************/
 
-void opponent_deck_size_test(struct gameState test, struct gameState def) {
+void opponent_deck_size_test(struct gameState test, struct gameState def, int choice) {
   int i = 0;
   printf("TEST #5\n");
   printf("Testing Opponent Deck Size with %d Players\n", test.numPlayers);
   printf("==> Opponent Deck Size should remain unchanged (10 Cards)\n");
-  for(i = 1; i < test.numPlayers; i ++) {
+  for (i = 1; i < test.numPlayers; i ++){
     printf("Received Deck Size for Opponent %d: %d\n", i + 1, test.deckCount[i]);
     printf("Expected Deck Size for Opponent %d: %d\n", i + 1, def.deckCount[i]);
     if(def.deckCount[i] != test.deckCount[i]){
-      printf("[%sFAILED%s] Received Opponent Deck Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[i]);
+      printf("[%sFAILED%s] Received Opponent Deck Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[1]);
     } else {
       printf("[%sPASSED%s] Received and Expected Opponent Deck Size Values Match\n", KGREEN, KNRM);
     }
@@ -264,32 +294,13 @@ void opponent_deck_size_test(struct gameState test, struct gameState def) {
 }
 
 /*******************************************************************************
-* Description: num_actions_test function
-*******************************************************************************/
-
-void num_actions_test(struct gameState test, struct gameState def) {
-  int actions = 2,
-      def_value = def.numActions + actions;
-  printf("TEST #6\n");
-  printf("Testing Number of Actions with %d Players\n", test.numPlayers);
-  printf("==> Number of Actions should be increased by 2\n");
-  printf("Received Number of Actions: %d\n", test.numActions);
-  printf("Expected Number of Actions: %d\n", def.numActions);
-  if(def_value != test.numActions){
-    printf("[%sFAILED%s] Received Opponent Deck Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[1]);
-  } else {
-    printf("[%sPASSED%s] Received and Expected Opponent Deck Size Values Match\n", KGREEN, KNRM);
-  }
-}
-
-/*******************************************************************************
 * Description: played_card_test function
 *******************************************************************************/
 
-void played_card_test(struct gameState test, struct gameState def) {
+void played_card_test(struct gameState test, struct gameState def, int choice) {
   int played = 1,
       def_value = (def.playedCardCount + played);
-  printf("TEST #7\n");
+  printf("TEST #6\n");
   printf("Testing Played Card Count with %d Players\n", test.numPlayers);
   printf("==> Played Card Count should be increased by 1 Card\n");
   printf("Received Played Card Count Value: %d\n", test.playedCardCount);
@@ -305,18 +316,16 @@ void played_card_test(struct gameState test, struct gameState def) {
 * Description: discard_test function
 *******************************************************************************/
 
-void discard_test(struct gameState test, struct gameState def) {
-  int discard = 1,
-      def_value = (def.discardCount[0] + discard);
-  printf("TEST #8\n");
+void discard_test(struct gameState test, struct gameState def, int choice) {
+  printf("TEST #7\n");
   printf("Testing Played Discard Count with %d Players\n", test.numPlayers);
-  printf("==> Discard Count should be increased by 1 Card\n");
+  printf("==> Discard Count should be increased by at least 1 Card\n");
   printf("Received Discard Count Value: %d\n", test.discardCount[0]);
-  printf("Expected Discard Count Value: %d\n", def_value);
-  if(def_value != test.discardCount[0]){
+  printf("Expected Discard Count Value: %d\n", def.discardCount[0] + 1);
+  if((def.discardCount[0] + 1) > test.discardCount[0]){
     printf("[%sFAILED%s] Received Discard Count Value (%d Cards) Incorrect\n", KRED, KNRM, test.discardCount[0]);
   } else {
-    printf("[%sPASSED%s] Received and Expected Discard Count Values Match\n", KGREEN, KNRM);
+    printf("[%sPASSED%s] Received and Expected values match\\n", KGREEN, KNRM);
   }
 }
 
@@ -324,13 +333,13 @@ void discard_test(struct gameState test, struct gameState def) {
 * Description: kingdom_card_test function
 *******************************************************************************/
 
-void kingdom_card_test(struct gameState test, struct gameState def, int* kingdomCards) {
+void kingdom_card_test(struct gameState test, struct gameState def, int* kingdomCards, int choice) {
   char* king_names[10] = {
                             "Adventurer", "Embargo", "Village", "Minion", "Mine",
                             "Cutpurse", "Sea Hag", "Tribute", "Smithy", "Council Room"
                           };
   int i = 0;
-  printf("TEST #9\n");
+  printf("TEST #8\n");
   printf("Testing Supply Card Piles (Kingdom Cards) with %d Players\n", test.numPlayers);
   printf("==> Kingdom Supply Card Pile should remain unchanged\n");
   for(i = 0; i < 10; i ++) {
@@ -348,21 +357,78 @@ void kingdom_card_test(struct gameState test, struct gameState def, int* kingdom
 * Description: victory_card_test function
 *******************************************************************************/
 
-void victory_card_test(struct gameState test, struct gameState def, int* victoryCards) {
+void victory_card_test(struct gameState test, struct gameState def, int* victoryCards, int choice) {
   char* vict_names[10] = {
                             "Estate", "Duchy", "Province"
                           };
-  int i = 0;
-  printf("TEST 10\n");
+  int i = 0,
+      draw = 0;
+  if (choice == 0) {
+    draw = 1;
+  }
+  printf("TEST #9\n");
   printf("Testing Supply Card Piles (Victory Cards) with %d Players\n", test.numPlayers);
-  printf("==> Victory Supply Card Pile should remain unchanged\n");
+  printf("==> Estate Value should reduce by one.\n");
+  printf("==> All other Victory Supply Card Piles should remain unchanged\n");
   for(i = 0; i < 3; i ++) {
-    printf("Received %s Cards: %d\n", vict_names[i], test.supplyCount[victoryCards[i]]);
-    printf("Expected %s Cards: %d\n", vict_names[i], def.supplyCount[victoryCards[i]]);
-    if(test.supplyCount[victoryCards[i]] != def.supplyCount[victoryCards[i]]) {
-      printf("[%sFAILED%s] Received Number of %s Cards (%d Cards) Incorrect\n", KRED, KNRM, vict_names[i], test.supplyCount[victoryCards[i]]);
+    if(i == (estate - 1)){
+      printf("Received %s Cards: %d\n", vict_names[i], test.supplyCount[victoryCards[i]]);
+      printf("Expected %s Cards: %d\n", vict_names[i], def.supplyCount[victoryCards[i]] - draw);
+      if(test.supplyCount[victoryCards[i]] != def.supplyCount[victoryCards[i]] - draw) {
+        printf("[%sFAILED%s] Received Number of %s Cards (%d Cards) Incorrect\n", KRED, KNRM, vict_names[i], test.supplyCount[victoryCards[i]]);
+      } else {
+        printf("[%sPASSED%s] Received and Expected Number of %s Cards Match\n", KGREEN, KNRM, vict_names[i]);
+      }
     } else {
-      printf("[%sPASSED%s] Received and Expected Number of %s Cards Match\n", KGREEN, KNRM, vict_names[i]);
+      printf("Received %s Cards: %d\n", vict_names[i], test.supplyCount[victoryCards[i]]);
+      printf("Expected %s Cards: %d\n", vict_names[i], def.supplyCount[victoryCards[i]]);
+      if(test.supplyCount[victoryCards[i]] != def.supplyCount[victoryCards[i]]) {
+        printf("[%sFAILED%s] Received Number of %s Cards (%d Cards) Incorrect\n", KRED, KNRM, vict_names[i], test.supplyCount[victoryCards[i]]);
+      } else {
+        printf("[%sPASSED%s] Received and Expected Number of %s Cards Match\n", KGREEN, KNRM, vict_names[i]);
+      }
     }
+  }
+}
+
+/*******************************************************************************
+* Description: teasure_card_test function
+*******************************************************************************/
+
+void teasure_card_test(struct gameState test, struct gameState def, int choice) {
+  int coins = 0,
+      def_value =0;
+  if(choice == 1){
+    coins = 4;
+  }
+  def_value = def.coins + coins;
+  printf("TEST #10\n");
+  printf("Testing Number of Coins with %d Players\n", test.numPlayers);
+  printf("==> Number of coins should increase to 6 (4 + 2 = 6)\n");
+  printf("Received Coin Count Value: %d\n", test.coins);
+  printf("Starting Coin Count Value: %d\n", def_value);
+  if(def_value != test.coins){
+    printf("[%sFAILED%s] Received Coin Count Value (%d Cards) Incorrect\n", KRED, KNRM, test.coins);
+  } else {
+    printf("[%sPASSED%s] Received and Expected Coin Count Values Match\n", KGREEN, KNRM);
+  }
+}
+
+/*******************************************************************************
+* Description: num_buy_test function
+*******************************************************************************/
+
+void num_buy_test(struct gameState test, struct gameState def, int choice) {
+  int buys = 1,
+      def_value = def.numBuys + buys;
+  printf("TEST #11\n");
+  printf("Testing Number of Buys (Choice %d) with %d Players\n", choice, test.numPlayers);
+  printf("==> Number of Buys should increase to 2 (1 + 1 = 2)\n");
+  printf("Received Buy Count Value: %d\n", test.numBuys);
+  printf("Starting Buy Count Value: %d\n", def_value);
+  if(def_value != test.numBuys){
+    printf("[%sFAILED%s] Received number of Buys (%d Buys) Incorrect\n", KRED, KNRM, test.numBuys);
+  } else {
+    printf("[%sPASSED%s] Received and Expected Buy Values Match\n", KGREEN, KNRM);
   }
 }

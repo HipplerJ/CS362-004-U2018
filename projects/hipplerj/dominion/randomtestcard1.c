@@ -105,7 +105,7 @@ int main(int argc, char const *argv[]) {
   struct gameState def_state,                                                   // Initialize a game state structure for default game values
                    test_state;                                                  // Initialize a game state structure for testing values
   int numPlayers = 0,                                                           // Initialize an integer variable for the number of players as 2
-      randomSeed = (rand() % 100),                                                        // Initialize an integer variable for random seed numbers
+      randomSeed = (rand() % 1000),                                                        // Initialize an integer variable for random seed numbers
       choice1 = 0,
       choice2 = 0,
       choice3 = 0,
