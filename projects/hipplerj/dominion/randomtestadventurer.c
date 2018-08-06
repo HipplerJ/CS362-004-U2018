@@ -105,7 +105,7 @@ int main(int argc, char const *argv[]) {
   struct gameState def_state,                                                   // Initialize a game state structure for default game values
                    test_state;                                                  // Initialize a game state structure for testing values
   int numPlayers = 0,                                                           // Initialize an integer variable for the number of players (random value between 0 and 5)
-      randomSeed = 0,                                                           // Initialize an integer variable for random seed numbers (Random Seed is randomly generated)
+      randomSeed = (rand() % 100),                                              // Initialize an integer variable for random seed numbers (Random Seed is randomly generated)
       choice1 = 0,
       choice2 = 0,
       choice3 = 0,
@@ -121,7 +121,6 @@ int main(int argc, char const *argv[]) {
                         };
   while(i < num_tests) {
     numPlayers = (rand() % 6);
-    randomSeed = (rand() % 1000);
     print_test_details(i, num_tests);
     status = test_initialize_game(numPlayers, kingdomCards, randomSeed, &def_state);
     if(status == -1) {
@@ -230,10 +229,10 @@ void opponent_hand_size_test(struct gameState test, struct gameState def) {
   printf("Testing Opponent Hand Size with %d Players\n", test.numPlayers);
   printf("==> Opponent Hand Size should remain unchanged (0 Cards)\n");
   for (i = 1; i < test.numPlayers; i ++) {
-    printf("Received Hand Size for Opponent %d: %d\n", i + 1, test.handCount[1]);
-    printf("Expected Hand Size for Opponent %d: %d\n", i + 1, def.handCount[1]);
-    if(def.handCount[1] != test.handCount[1]){
-      printf("[%sFAILED%s] Received Opponent Hand Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.handCount[1]);
+    printf("Received Hand Size for Opponent %d: %d\n", i + 1, test.handCount[i]);
+    printf("Expected Hand Size for Opponent %d: %d\n", i + 1, def.handCount[i]);
+    if(def.handCount[i] != test.handCount[i]){
+      printf("[%sFAILED%s] Received Opponent Hand Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.handCount[i]);
     } else {
       printf("[%sPASSED%s] Received and Expected Opponent Hand Size Values Match\n", KGREEN, KNRM);
     }
@@ -252,8 +251,8 @@ void opponent_deck_size_test(struct gameState test, struct gameState def) {
   for (i = 1; i < test.numPlayers; i ++){
     printf("Received Deck Size for Opponent %d: %d\n", i + 1, test.deckCount[i]);
     printf("Expected Deck Size for Opponent %d: %d\n", i + 1, def.deckCount[i]);
-    if(def.deckCount[1] != test.deckCount[1]){
-      printf("[%sFAILED%s] Received Opponent Deck Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[1]);
+    if(def.deckCount[i] != test.deckCount[i]){
+      printf("[%sFAILED%s] Received Opponent Deck Size Value (%d Cards) Incorrect\n", KRED, KNRM, test.deckCount[i]);
     } else {
       printf("[%sPASSED%s] Received and Expected Opponent Deck Size Values Match\n", KGREEN, KNRM);
     }
