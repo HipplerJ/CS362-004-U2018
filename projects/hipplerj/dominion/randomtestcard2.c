@@ -103,7 +103,7 @@ void num_buy_test(struct gameState, struct gameState, int);
 *******************************************************************************/
 
 int main(int argc, char const *argv[]) {
-  int num_tests = 5000;
+  int num_tests = 50000;
   int status = -5;
   srand(time(NULL));
   struct gameState def_state,                                                   // Initialize a game state structure for default game values

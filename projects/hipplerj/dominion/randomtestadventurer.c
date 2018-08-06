@@ -99,7 +99,7 @@ void victory_card_test(struct gameState, struct gameState, int*);
 *******************************************************************************/
 
 int main(int argc, char const *argv[]) {
-  int num_tests = 5000;                                                         // Initialize a variable for the number of times testing will be performed (currently 5,000)
+  int num_tests = 50000;                                                        // Initialize a variable for the number of times testing will be performed (currently 5,000)
   int status = -5;                                                              // Initialize a variable for the status of initializing the game (set to bogus value)
   srand(time(NULL));                                                            // Use the system clock to initialize random values
   struct gameState def_state,                                                   // Initialize a game state structure for default game values
