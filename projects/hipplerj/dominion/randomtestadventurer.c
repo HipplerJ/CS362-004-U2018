@@ -105,7 +105,7 @@ int main(int argc, char const *argv[]) {
   struct gameState def_state,                                                   // Initialize a game state structure for default game values
                    test_state;                                                  // Initialize a game state structure for testing values
   int numPlayers = 0,                                                           // Initialize an integer variable for the number of players (random value between 0 and 5)
-      randomSeed = (rand() % 1000),                                             // Initialize an integer variable for random seed numbers (Random Seed is randomly generated)
+      randomSeed = 0,                                                           // Initialize an integer variable for random seed numbers (Random Seed is randomly generated)
       choice1 = 0,
       choice2 = 0,
       choice3 = 0,
@@ -121,6 +121,7 @@ int main(int argc, char const *argv[]) {
                         };
   while(i < num_tests) {
     numPlayers = (rand() % 6);
+    randomSeed = (rand() % 1000);
     print_test_details(i, num_tests);
     status = test_initialize_game(numPlayers, kingdomCards, randomSeed, &def_state);
     if(status == -1) {
@@ -147,8 +148,6 @@ int main(int argc, char const *argv[]) {
 
 /*******************************************************************************
 * Description: print_test_details function
-* Print the test information to the console.  This includes printing the
-* name of the card being test and the name of the file performing the tests.
 *******************************************************************************/
 
 void print_test_details(int test_number, int num_tests) {
