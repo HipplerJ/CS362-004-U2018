@@ -6,5 +6,5 @@ Software Engineering II
 The primary goal of this assignment is to learn how to write a bug report and debug
 
 ## Tested Repository  
-Kyle Martinez (kylemrtnez)
+Kyle Martinez (kylemrtnez)  
 https://github.com/kylemrtnez/CS362-004-U2018
