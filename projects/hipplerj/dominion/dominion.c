@@ -1221,7 +1221,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     return 0;
 
   case salvager:
-    return salvagerEffect(state, currentPlayer, choice1, handPos);    
+    return salvagerEffect(state, currentPlayer, choice1, handPos);
 
   case sea_hag:
     for (i = 0; i < state->numPlayers; i++)
@@ -1386,7 +1386,7 @@ int adventurerEffect(struct gameState *gstate, int curPlayer, int tempHand[], in
 {
   int drawntreasure = 0;
   int cardDrawn;
-  while (drawntreasure < 2) 
+  while (drawntreasure < 2)
   {
     if (gstate->deckCount[curPlayer] < 2)
     { //if the deck is empty we need to shuffle discard and add to deck
@@ -1403,7 +1403,7 @@ int adventurerEffect(struct gameState *gstate, int curPlayer, int tempHand[], in
       tempCount++;
     }
   }
-  
+
   while (tempCount - 1 >= 0)
   {
     gstate->discard[curPlayer][gstate->discardCount[curPlayer]++] = tempHand[tempCount - 1]; // discard all cards in play that have been drawn
