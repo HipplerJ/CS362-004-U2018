@@ -1,6 +1,6 @@
 # Final Project (Part B)
-CS 362-400 (Summer 2018)
-Software Engineering II
+CS 362-400 (Summer 2018)  
+Software Engineering II  
 Due: Monday, August 13, 2018  
 
 ## Group Members
