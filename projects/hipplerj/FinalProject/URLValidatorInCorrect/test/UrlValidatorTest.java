@@ -12,39 +12,28 @@ import junit.framework.TestCase;
 
 public class UrlValidatorTest extends TestCase {
 
-
    public UrlValidatorTest(String testName) {
       super(testName);
    }
 
 
    // KYLE MARTINEZ
-   public void testManualTest()
-   {
-//You can use this function to implement your manual testing
-
+   public void testManualTest() {
+     //You can use this function to implement your manual testing
    }
 
    // JAMES HIPPLER
-   public void testYourFirstPartition()
-   {
-	 //You can use this function to implement your First Partition testing
-
+   public void testYourFirstPartition() {
+	    //You can use this function to implement your First Partition testing
    }
 
    // CAITLIN DUDLEY
-   public void testYourSecondPartition(){
+   public void testYourSecondPartition() {
 		 //You can use this function to implement your Second Partition testing
-
    }
    //You need to create more test cases for your Partitions if you need to
 
-   public void testIsValid()
-   {
+   public void testIsValid() {
 	   //You can use this function for programming based testing
-
    }
-
-
-
 }
