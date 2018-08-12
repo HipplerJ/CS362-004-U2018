@@ -5,6 +5,12 @@
 #include <math.h>
 #include <stdlib.h>
 
+int adventurerEffect(struct gameState*, int, int[], int);
+int smithyEffect(struct gameState*, int, int);
+int mineEffect(struct gameState*, int, int, int, int);
+int salvagerEffect(struct gameState*, int, int, int);
+int greathallEffect(struct gameState*, int, int);
+
 int compare(const void *a, const void *b)
 {
   if (*(int *)a > *(int *)b)
@@ -1478,7 +1484,7 @@ int salvagerEffect(struct gameState *gstate, int curPlayer, int choiceA, int han
     //+1 buy
     gstate->numBuys++;
 
-    if (!choiceA)
+    if (choiceA)
     {
       //gain coins equal to trashed card
       gstate->coins = gstate->coins + getCost(handCard(choiceA, gstate));
