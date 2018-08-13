@@ -59,8 +59,8 @@ public class UrlValidatorTest extends TestCase {
    // JAMES HIPPLER (HIPPLERJ)
    public void test_url_schemes() {
        String name = "Schemes";
-       String[] schemes = { "https://", "http://", "ftp://", "http/", "http:", "://", "" };
-       Boolean[] validity = { true, true, true, false, false, false, true };
+       String[] schemes = { "https://", "http://", "ftp://", "http/", "http:", "://", "", "hhhh" };
+       Boolean[] validity = { true, true, true, false, false, false, true, false };
        System.out.println("PARTITION TESTING: " + "\u001B[34m" + "URL SCHEMES" +
        "\u001B[0m");
        perform_partition_test(name, schemes, validity);
